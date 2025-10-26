@@ -1,16 +1,20 @@
-# 🌤️ WeatherViz
+# WeatherViz
 
 Sistema completo de consulta climática com API REST e dashboard interativo.
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
 - **API REST** com FastAPI
 - **Dashboard interativo** com Streamlit
 - **Histórico de consultas** em SQLite
 - **Gráficos dinâmicos** com Plotly
+- **Previsão de 5 dias** com gráficos de tendência
+- **Comparação entre cidades** (até 5 simultaneamente)
+- **Configurações personalizadas** (Celsius/Fahrenheit, idiomas)
+- **Exportação de dados** em CSV
 - **Deploy em nuvem** (Render + Streamlit Cloud)
 
-## 📋 Endpoints da API
+## Endpoints da API
 
 ### `GET /weather/{cidade}`
 Retorna dados climáticos atuais da cidade.
@@ -32,10 +36,35 @@ Retorna dados climáticos atuais da cidade.
 ### `GET /history/{cidade}`
 Retorna histórico de consultas da cidade.
 
+### `GET /forecast/{cidade}`
+Retorna previsão de 5 dias da cidade.
+
+**Resposta:**
+```json
+{
+  "city": "São Paulo",
+  "country": "BR",
+  "forecasts": [
+    {
+      "datetime": "2024-01-15 12:00:00",
+      "temperature": 25.3,
+      "feels_like": 27.1,
+      "humidity": 68,
+      "wind_speed": 2.8,
+      "description": "Parcialmente Nublado",
+      "icon": "02d"
+    }
+  ]
+}
+```
+
+### `GET /compare?cities=cidade1,cidade2,cidade3`
+Compara múltiplas cidades (máximo 5).
+
 ### `GET /health`
 Status da API.
 
-## 🛠️ Instalação Local
+## Instalação Local
 
 ### 1. Clone o repositório
 ```bash
@@ -71,37 +100,51 @@ streamlit run dashboard.py
 ```
 Dashboard disponível em: http://localhost:8501
 
-## 🌐 Deploy
+## Deploy
 
-### API (Render/Railway)
-1. Conecte seu repositório
-2. Configure a variável `OPENWEATHER_API_KEY`
-3. Deploy automático
+### 1. API (Render)
+1. Acesse [Render](https://render.com) e conecte seu repositório
+2. Crie um novo Web Service
+3. Configure:
+   - Build Command: `pip install -r requirements.txt`
+   - Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
+4. Adicione variável de ambiente: `OPENWEATHER_API_KEY`
+5. Deploy! Anote a URL gerada
 
-### Dashboard (Streamlit Cloud)
-1. Conecte seu repositório no [Streamlit Cloud](https://streamlit.io/cloud)
-2. Configure o arquivo principal: `dashboard.py`
-3. Atualize a `API_BASE_URL` no dashboard
+### 2. Dashboard (Streamlit Cloud)
+1. Acesse [Streamlit Cloud](https://streamlit.io/cloud)
+2. Conecte seu repositório GitHub
+3. Configure:
+   - Main file: `dashboard.py`
+   - Python version: 3.7+
+4. Adicione secret: `API_BASE_URL` com a URL da sua API
+5. Deploy!
 
-## 🔑 API Key OpenWeatherMap
+### 3. Configuração Local para Produção
+```bash
+cp .streamlit/secrets.toml.example .streamlit/secrets.toml
+# Edite secrets.toml com a URL real da sua API
+```
+
+## API Key OpenWeatherMap
 
 1. Acesse [OpenWeatherMap](https://openweathermap.org/api)
 2. Crie uma conta gratuita
 3. Gere sua API Key
 4. Configure no arquivo `.env`
 
-## 📊 Tecnologias
+## Tecnologias
 
 - **Backend:** FastAPI, SQLite, Requests
-- **Frontend:** Streamlit, Plotly, Pandas
+- **Frontend:** Streamlit, Plotly, Pandas, NumPy
 - **Deploy:** Render, Streamlit Cloud
-- **API Externa:** OpenWeatherMap
+- **API Externa:** OpenWeatherMap (Current Weather + 5 Day Forecast)
 
-## 📸 Screenshots
+## Screenshots
 
 *Em breve - adicionar GIFs de demonstração*
 
-## 🤝 Contribuição
+## Contribuição
 
 1. Fork o projeto
 2. Crie uma branch (`git checkout -b feature/nova-funcionalidade`)
@@ -109,10 +152,10 @@ Dashboard disponível em: http://localhost:8501
 4. Push para a branch (`git push origin feature/nova-funcionalidade`)
 5. Abra um Pull Request
 
-## 📄 Licença
+## Licença
 
 Este projeto está sob a licença MIT.
 
 ---
 
-**WeatherViz** - Sistema profissional de consulta climática 🌤️
+**WeatherViz** - Sistema profissional de consulta climática

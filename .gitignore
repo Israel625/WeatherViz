@@ -24,6 +24,9 @@ weather.db
 .venv/
 venv/
 
+# Secrets locais (não committar)
+.streamlit/secrets.toml
+
 .DS_Store
 .vscode/
 .idea/
