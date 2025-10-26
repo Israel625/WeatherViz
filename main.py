@@ -88,5 +88,8 @@ def compare_cities(cities: str, units: str = "metric", lang: str = "pt_br"):
 def health_check():
     return {"status": "healthy", "service": "WeatherViz API"}
 
+# Para Vercel
+handler = app
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
